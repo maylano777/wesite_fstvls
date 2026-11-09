@@ -1,0 +1,498 @@
+/* ==========================================================
+   FSTVLST - style.css (versi perbaikan + efek hover)
+   Daftar isi:
+   1. Variabel warna
+   2. Dasar (body, judul, section)
+   3. Navbar
+   4. Hero, garis lakban, background slideshow, titik navigasi
+   5. Tombol
+   6. Latar section
+   7. Tentang (timeline, gerakan)
+   8. Diskografi dan Personil (gambar)
+   9. Merch dan Tiket
+   10. Kontak dan formulir
+   11. Footer
+   12. Efek hover kartu (BARU)
+   13. Aksesibilitas dan responsif
+   ========================================================== */
+
+
+/* 1. VARIABEL WARNA ---------------------------------------- */
+:root {
+  --merah: #d62828;
+  --kuning: #f2c200;
+  --hitam: #000;
+  --putih: #fff;
+  --abu: #e9e9e9;
+}
+
+
+/* 2. DASAR -------------------------------------------------- */
+/* scroll-padding-top: supaya judul section tidak ketutup navbar sticky */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
+}
+
+body {
+  font-family: 'Karla', sans-serif;
+  color: var(--hitam);
+  background: var(--putih);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+.brand {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+h2 {
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  margin-bottom: 1.5rem;
+}
+
+section {
+  padding: 5rem 0;
+}
+
+
+/* 3. NAVBAR ------------------------------------------------- */
+.navbar {
+  background: var(--hitam);
+}
+
+.navbar .nav-link {
+  color: var(--putih);
+  font-weight: 700;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus-visible {
+  color: var(--kuning);
+}
+
+.brand {
+  color: var(--putih);
+  font-size: 1.6rem;
+  text-decoration: none;
+}
+
+
+/* 4. HERO --------------------------------------------------- */
+.hero {
+  /* Warna garis lakban, diubah oleh script.js tiap ganti slide */
+  --garis1: #d62828;
+  --garis2: #f2c200;
+  isolation: isolate;
+
+  background: var(--hitam);
+  color: var(--putih);
+  min-height: 88vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero .wordmark {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(4.5rem, 21vw, 15rem);
+  line-height: 0.9;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  /* Efek warna berubah mengikuti gambar dan garis lakban.
+     Hapus baris ini kalau mau wordmark putih polos. */
+  mix-blend-mode: difference;
+}
+
+.hero p {
+  max-width: 34rem;
+  font-size: 1.2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Dua garis vertikal (lakban), warnanya mengikuti slide */
+.lakban {
+  position: relative;
+}
+
+.lakban::before,
+.lakban::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 7%;
+  transition: background-color 1.2s ease;
+}
+
+.lakban::before {
+  left: 18%;
+  background-color: var(--garis1);
+}
+
+.lakban::after {
+  left: 30%;
+  background-color: var(--garis2);
+}
+
+/* Lapisan gambar background slideshow */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.hero-bg .slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.hero-bg .slide.aktif {
+  opacity: 1;
+}
+
+/* Lapisan gelap tipis supaya tulisan putih tetap terbaca */
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/* Titik navigasi slide */
+.kontrol {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.2rem;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+}
+
+.titik-wrap {
+  display: flex;
+  align-items: center;
+}
+
+/* Area sentuh 1,5rem (nyaman di HP), tampilan titik tetap 0,75rem
+   karena warna hanya digambar di area konten (background-clip) */
+.titik {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.375rem;
+  border: 0;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.4);
+  background-clip: content-box;
+  cursor: pointer;
+  transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+.titik:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Titik aktif memanjang jadi pil, warnanya ikut warna garis */
+.titik.aktif {
+  width: 3.15rem;
+  background-color: var(--garis1);
+}
+
+
+/* 5. TOMBOL ------------------------------------------------- */
+/* Supaya tombol di hero tampil di atas garis lakban */
+.hero .btn {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-merah {
+  background: var(--merah);
+  color: var(--putih);
+  border: 2px solid var(--merah);
+  border-radius: 0;
+  font-weight: 700;
+  padding: 0.7rem 1.6rem;
+}
+
+.btn-merah:hover {
+  background: var(--putih);
+  color: var(--merah);
+}
+
+.btn-garis {
+  border: 2px solid var(--putih);
+  color: var(--putih);
+  border-radius: 0;
+  font-weight: 700;
+  padding: 0.7rem 1.6rem;
+}
+
+.btn-garis:hover {
+  background: var(--kuning);
+  border-color: var(--kuning);
+  color: var(--hitam);
+}
+
+
+/* 6. LATAR SECTION ------------------------------------------ */
+.gelap {
+  background: var(--hitam);
+  color: var(--putih);
+}
+
+/* Link biasa di section gelap (misalnya di Merch) jadi kuning,
+   supaya tidak biru gelap di atas hitam */
+.gelap a:not(.btn) {
+  color: var(--kuning);
+}
+
+.gelap a:not(.btn):hover {
+  color: var(--putih);
+}
+
+.abu {
+  background: var(--abu);
+}
+
+
+/* 7. TENTANG ------------------------------------------------ */
+.timeline {
+  list-style: none;
+  padding: 0;
+  border-left: 6px solid var(--merah);
+}
+
+.timeline li {
+  padding: 0 0 1.1rem 1.4rem;
+  position: relative;
+}
+
+.timeline b {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--merah);
+  margin-right: 0.6rem;
+}
+
+.gerakan {
+  border-top: 6px solid var(--kuning);
+  padding-top: 0.8rem;
+  height: 100%;
+}
+
+
+/* 8. DISKOGRAFI DAN PERSONIL -------------------------------- */
+/* Kotak persegi untuk foto personil dan sampul album */
+.foto,
+.sampul {
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--hitam); /* warna cadangan kalau gambar belum termuat */
+}
+
+/* Gambar mengisi kotak tanpa gepeng */
+.foto img,
+.sampul img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sampul-a a {
+  display: inline-block;        /* kunci utamanya: sekarang padding & margin atas-bawah berlaku */
+  background-color: var(--kuning);
+  color: var(--hitam);          /* biru bawaan link di atas kuning susah dibaca */
+  font-weight: 700;
+  line-height: 1.4;
+  padding: 6px 16px;            /* atas-bawah 6px, kiri-kanan 16px: seimbang, teks di tengah */
+  margin-top: 8px;              /* jarak dari tulisan "Album, 2014" */
+  border-radius: 50px;
+  text-decoration: none;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+.sampul-a a:hover {
+  background-color: var(--hitam);
+  color: var(--kuning);
+}
+
+.foto {
+  margin-bottom: 0.8rem;
+}
+
+.kartu-personil h3 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.kartu-personil small {
+  color: #555;
+}
+
+
+/* 9. MERCH DAN TIKET ---------------------------------------- */
+.peringatan {
+  border-left: 6px solid var(--merah);
+  background: var(--putih);
+  padding: 1rem 1.2rem;
+}
+
+.tabel-tiket {
+  --bs-table-bg: transparent;
+  color: inherit;
+}
+
+.tabel-tiket th {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+
+/* 10. KONTAK DAN FORMULIR ----------------------------------- */
+.sosmed a {
+  display: block;
+  padding: 0.6rem 0;
+  color: var(--putih);
+  font-weight: 700;
+  border-bottom: 1px solid #444;
+  text-decoration: none;
+}
+
+.sosmed a:hover {
+  color: var(--kuning);
+}
+
+.form-control,
+.form-select {
+  border-radius: 0;
+  border: 2px solid var(--hitam);
+}
+
+
+/* 11. FOOTER ------------------------------------------------ */
+footer {
+  background: var(--hitam);
+  color: #aaa;
+  padding: 2rem 0;
+  border-top: 8px solid var(--kuning);
+}
+
+
+/* 12. EFEK HOVER KARTU (BARU) -------------------------------
+   Idenya sama seperti kartu di Loket.com: saat kursor di atas kartu,
+   kartu terangkat dan warnanya berubah. Bedanya, di sini bayangannya
+   keras tanpa blur supaya cocok dengan gaya situs (sudut tajam, tebal).
+   ---------------------------------------------------------- */
+
+/* "Transition" ditaruh di keadaan normal supaya animasi jalan
+   dua arah: saat kursor masuk DAN saat keluar. */
+.foto,
+.sampul {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kartu-personil h3,
+.gerakan,
+.gerakan h3 {
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Dibungkus (hover: hover) supaya efek hanya aktif di perangkat
+   dengan mouse. Di HP, efek hover bisa "nyangkut" setelah disentuh. */
+@media (hover: hover) {
+
+  /* Personil: foto terangkat + bayangan merah, nama jadi merah */
+  .kartu-personil:hover .foto {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 var(--merah);
+  }
+
+  .kartu-personil:hover h3 {
+    color: var(--merah);
+  }
+
+  /* Diskografi: sampul terangkat + bayangan merah */
+  .sampul:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 var(--merah);
+  }
+
+  /* Tentang: garis atas kotak gerakan kuning -> merah, judul ikut merah */
+  .gerakan:hover {
+    border-top-color: var(--merah);
+  }
+
+  .gerakan:hover h3 {
+    color: var(--merah);
+  }
+}
+
+
+/* 13. AKSESIBILITAS DAN RESPONSIF --------------------------- */
+/* Outline hitam + bayangan kuning: terlihat di latar putih maupun hitam */
+a:focus-visible,
+button:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible {
+  outline: 3px solid var(--hitam);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--kuning);
+}
+
+/* Hormati pengaturan "kurangi gerakan" di perangkat */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .hero-bg .slide,
+  .lakban::before,
+  .lakban::after,
+  .titik,
+  .foto,
+  .sampul,
+  .kartu-personil h3,
+  .gerakan,
+  .gerakan h3 {
+    transition: none;
+  }
+}
+
+@media (max-width: 575px) {
+  section {
+    padding: 3.5rem 0;
+  }
+
+  .lakban::before {
+    left: 6%;
+  }
+
+  .lakban::after {
+    left: 18%;
+  }
+}
+
+/* Hover sampul album */
+.sampul {
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.sampul:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 8px 8px 0 var(--hover, );
+}
